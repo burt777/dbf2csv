@@ -8,7 +8,11 @@ import codecs
 
 
 def dbf2csv():
-    ''' Convert a FoxPro DBF file to CSV, either stdOut or output file  '''
+    ''' 
+        Convert a FoxPro DBF file to CSV, either stdOut or output file. 
+        Specify the code page of the input file with -e. 
+        The output is written to UTF-8. 
+    '''
 
     parser = argparse.ArgumentParser(description = dbf2csv.__doc__)
 
