@@ -54,7 +54,7 @@ def dbf2csv():
 
     # Output: use stdOut if no output file was given:
     if args.outputFile == False:
-        sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+        # sys.stdout = codecs.getwriter('utf8')(sys.stdout)
         outFileHandle = sys.stdout
     elif args.outputFile is None:
         print ("Error: no output file. Specify output file like this: ")
