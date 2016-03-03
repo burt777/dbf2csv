@@ -4,6 +4,8 @@ import csv
 import logging
 from dbfread import DBF
 import argparse
+import codecs
+
 
 def dbf2csv():
     ''' Convert a FoxPro DBF file to CSV, either stdOut or output file  '''
@@ -48,11 +50,12 @@ def dbf2csv():
         sys.exit(1)
 
     # Input:
-    reader = DBF(args.inputFile.name, ignore_missing_memofile = True, encoding = args.encodingIn)
+    reader = DBF(args.inputFile.name, encoding = args.encodingIn,  ignore_missing_memofile = True)
 
     # Output: use stdOut if no output file was given:
     if args.outputFile == False:
         outFileHandle = sys.stdout
+        sys.stdout = codecs.getwriter('utf8')(sys.stdout)
     elif args.outputFile is None:
         print ("Error: no output file. Specify output file like this: ")
         print ("\t -o table.csv")
