@@ -29,6 +29,16 @@ def dbf2csv():
             help = "Output file (.csv), default: stdOut"
     )
 
+    parser.add_argument(
+            '-e', '--encoding', 
+            action = "store",
+            nargs = '?',
+            dest = 'encodingIn',
+            type = str,
+            default = 'cp1252',
+            help = "Encoding of input file, default: cp1252, try latin5 for Turkish, cp1250 for Polish, or utf_8 if you're really hip"
+    )
+
     # Get all arguments
     args = parser.parse_args()
 
@@ -37,7 +47,10 @@ def dbf2csv():
         parser.print_help()
         sys.exit(1)
 
-    # Use stdOut if no output file was given:
+    # Input:
+    reader = DBF(args.inputFile.name, ignore_missing_memofile = True, encoding = args.encodingIn)
+
+    # Output: use stdOut if no output file was given:
     if args.outputFile == False:
         outFileHandle = sys.stdout
     elif args.outputFile is None:
@@ -45,17 +58,14 @@ def dbf2csv():
         print ("\t -o table.csv")
         sys.exit(1)
     else:
-        outFileHandle = open(args.outputFile.name, 'w', newline='')
+        outFileHandle = open(args.outputFile.name, 'w', newline='', encoding = 'UTF-8') #, encoding = args.encoding)
     
-    reader = DBF(args.inputFile.name, ignore_missing_memofile = True)
-    
-    rowNr = 0
-    for row in reader:
-        if rowNr < 1:
+    # Go go go:
+    for nr, row in enumerate(reader):
+        if nr == 0:
             writer = csv.DictWriter(outFileHandle, row.keys())
             writer.writeheader()
         writer.writerow(row)
-        rowNr += 1
 
 if __name__ == "__main__":
     dbf2csv()
