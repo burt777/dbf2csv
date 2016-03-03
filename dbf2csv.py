@@ -72,6 +72,8 @@ def dbf2csv():
             writer.writerow(row)
     except UnicodeDecodeError:
            sys.exit("\nERROR: could not decode data in code page " + args.encodingIn + ". Try another input encoding with -e.")
+    except UnicodeEncodeError:
+            sys.exit("\nERROR: could not encode data to utf-8. If you're in a windows command prompt, change the local code page to utf-8 with \n\n chcp 65001\n")
 
 
 if __name__ == "__main__":
