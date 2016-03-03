@@ -64,11 +64,15 @@ def dbf2csv():
         outFileHandle = open(args.outputFile.name, 'w', newline='', encoding = 'UTF-8') #, encoding = args.encoding)
     
     # Go go go:
-    for nr, row in enumerate(reader):
-        if nr == 0:
-            writer = csv.DictWriter(outFileHandle, row.keys())
-            writer.writeheader()
-        writer.writerow(row)
+    try:
+        for nr, row in enumerate(reader):
+            if nr == 0:
+                writer = csv.DictWriter(outFileHandle, row.keys())
+                writer.writeheader()
+            writer.writerow(row)
+    except UnicodeDecodeError:
+           sys.exit("\nERROR: could not decode data in code page " + args.encodingIn + ". Try another input encoding with -e.")
+
 
 if __name__ == "__main__":
     dbf2csv()
